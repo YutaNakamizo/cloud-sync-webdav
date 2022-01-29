@@ -1,0 +1,3 @@
+MAILTO=""
+* * * * * /bin/date >> /tmp/hello.txt
+
