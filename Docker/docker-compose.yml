@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  nextcloud:
+    image: nextcloud:stable-apache
+    environment:
+      - MYSQL_HOST=db:3306
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    env_file:
+      - "./env_files/nextcloud.env"
+      - "./env_files/db.env"
+    volumes:
+      - "./data/nextcloud:/var/www/html"
+    restart: always
+    ports:
+      - "${NEXTCLOUD_PORT}:80"
+    networks:
+      - nextcloud_net
+  db:
+    image: mariadb:10-focal
+    command: "--skip-innodb-read-only-compressed"
+    environment:
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    env_file:
+      - "./env_files/db.env"
+    volumes:
+      - "./data/db:/var/lib/mysql"
+    restart: always
+    networks:
+      - nextcloud_net
+
+networks:
+  nextcloud_net:
+    driver: bridge
+
