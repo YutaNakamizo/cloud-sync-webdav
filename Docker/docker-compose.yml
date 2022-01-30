@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nextcloud:
-    image: nextcloud:stable-apache
+    build: ./nextcloud
     environment:
       - TZ=$TZ
       - MYSQL_HOST=db:3306
@@ -13,14 +13,15 @@ services:
       - "./env_files/db.env"
     volumes:
       - "./data/nextcloud:/var/www/html"
+    depends_on:
+      - db
     restart: always
     ports:
       - "${NEXTCLOUD_PORT}:80"
     networks:
       - nextcloud_net
   db:
-    image: mariadb:10-focal
-    command: "--skip-innodb-read-only-compressed"
+    build: ./db
     environment:
       - TZ=$TZ
       - MYSQL_DATABASE=nextcloud
@@ -30,12 +31,12 @@ services:
     volumes:
       - "./data/db:/var/lib/mysql"
     restart: always
+    ports:
+      - "8888:3306"
     networks:
       - nextcloud_net
   sync:
-    build:
-      context: .
-      dockerfile: ./sync/Dockerfile
+    build: ./sync
     environment:
       - TZ=$TZ
     env_file:

@@ -2,13 +2,13 @@ FROM rclone/rclone:latest
 
 RUN adduser -S rclone-sync
 RUN mkdir -p /var/spool/cron/crontabs/
-COPY ./sync/cron.d/sync /var/spool/cron/crontabs/rclone-sync
+COPY ./cron.d/sync /var/spool/cron/crontabs/rclone-sync
 
 WORKDIR /usr/src/sync/
 
-COPY ./sync/scripts ./scripts
+COPY ./scripts ./scripts
 
-COPY ./sync/entrypoint.sh .
+COPY ./entrypoint.sh .
 RUN chmod 744 ./entrypoint.sh
 
 ENTRYPOINT "./entrypoint.sh"
