@@ -1,3 +1,2 @@
-MAILTO=""
-* * * * * /bin/date >> /tmp/hello.txt
+* * * * * /bin/sh /usr/src/sync/scripts/sync.sh
 

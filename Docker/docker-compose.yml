@@ -12,7 +12,6 @@ services:
       - "./env_files/db.env"
     volumes:
       - "./data/nextcloud:/var/www/html"
-      - "./data/sync/config:/var/www/html/data/sync"
     restart: always
     ports:
       - "${NEXTCLOUD_PORT}:80"
@@ -35,9 +34,15 @@ services:
     build:
       context: .
       dockerfile: ./sync/Dockerfile
+    env_file:
+      - "./env_files/nextcloud.env"
     volumes:
-      - "./data/sync/config:/usr/src/sync/config"
+      - "./data/sync/config:/usr/src/sync/config/default"
+      - "./data/sync/logs:/var/log/rclone-sync"
+      - "./data/nextcloud/data/$SYNC_CONFIG_DIR:/usr/src/sync/config/from-nextcloud:ro"
     restart: always
+    networks:
+      - nextcloud_net
 
 networks:
   nextcloud_net:
