@@ -9,7 +9,9 @@ services:
       - GROUPID=$GROUPID
     command: >
       -u "user;userpassword"
-      -s "root;/share/Root;yes;no;no;"
+      -g "map to guest = Never"
+      -s "root;/share/Root;yes;no;no;user"
+      -s "sync_config;/share/sync_config;yes;no;no;user"
       -n
       -p
     volumes:
