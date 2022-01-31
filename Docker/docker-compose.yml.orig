@@ -15,7 +15,7 @@ services:
       -n
       -p
     volumes:
-      - "./data/samba:/share/Root"
+      - "./data/samba/data/Root:/share/Root"
       - "./data/sync/config/share:/share/sync_config"
       - "./data/samba/logs:/var/log/samba"
     restart: always
@@ -31,9 +31,10 @@ services:
     environment:
       - TZ=$TZ
     volumes:
-      - "./data/sync/config:/usr/src/sync/config/default"
+      - "./data/sync/config/default:/usr/src/sync/config/default"
       - "./data/sync/config/share:/usr/src/sync/config/share"
       - "./data/sync/logs:/var/log/rclone-sync"
+      - "./data/samba/data/Root:/share/Root:ro"
     depends_on:
       - samba
     restart: always

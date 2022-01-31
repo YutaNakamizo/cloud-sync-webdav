@@ -12,7 +12,7 @@ add_log () {
 add_log "Start exec rclone."
 
 # Check file "targets" exists
-targets="$ROOT/config/from-nextcloud/targets"
+targets="$ROOT/config/share/targets"
 if [ ! -e $targets ]; then
   add_log "File \"targets\" does not exist."
   exit 1
@@ -20,8 +20,10 @@ fi
 
 # Exec rclone for each target
 cat $targets | while read line; do
-  add_log "rclone $line"
-  add_log `rclone $line -vv --config "$ROOT/config/default/rclone.config"`
+  command=`echo $line | sed -e 's/local:\//local:\/share\/Root\//'`
+  add_log $line
+  add_log "rclone $command"
+  add_log `rclone $command -vv --config "$ROOT/config/default/rclone.config"`
 done
 
 add_log "Finished exec rclone."
