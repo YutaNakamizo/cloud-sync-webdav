@@ -35,8 +35,6 @@ services:
       - "./data/sync/config/share:/usr/src/sync/config/share"
       - "./data/sync/logs:/var/log/rclone-sync"
       - "./data/samba/data/Root:/share/Root:ro"
-    depends_on:
-      - samba
     restart: always
     networks:
       - samba_net
