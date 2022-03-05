@@ -23,7 +23,7 @@ services:
       - SYNC_WEBDAV_PASSWORD
     volumes:
       - "./data/sync/config/default:/usr/src/sync/config/default"
-      - "./data/webdav/storage:/usr/src/sync/config/share:ro"
+      - "./data/webdav/storage/data/config:/usr/src/sync/config/share:ro"
       - "./data/sync/logs:/var/log/rclone-sync"
     restart: always
     networks:
