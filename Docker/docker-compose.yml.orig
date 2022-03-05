@@ -4,7 +4,9 @@ services:
   webdav:
     build: ./webdav/latest
     environment:
-      - TZ=$TZ
+      - TZ
+      - WEBDAV_USERNAME
+      - WEBDAV_PASSWORD
     volumes:
       - "./data/webdav/storage:/var/lib/dav"
       - "./data/webdav/user.passwd:/user.passwd"
@@ -16,10 +18,12 @@ services:
   sync:
     build: ./sync
     environment:
-      - TZ=$TZ
+      - TZ
+      - SYNC_WEBDAV_USERNAME
+      - SYNC_WEBDAV_PASSWORD
     volumes:
       - "./data/sync/config/default:/usr/src/sync/config/default"
-      - "./data/sync/config/share:/usr/src/sync/config/share"
+      - "./data/webdav/storage:/usr/src/sync/config/share:ro"
       - "./data/sync/logs:/var/log/rclone-sync"
     restart: always
     networks:
