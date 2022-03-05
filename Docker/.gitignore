@@ -1,9 +1,6 @@
 # env files
 *.env
 
-# docker-compose
-/docker-compose.yml
-
 # Data dir
 /data
 
