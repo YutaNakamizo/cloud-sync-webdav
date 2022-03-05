@@ -1,7 +1,11 @@
 #!/bin/sh
 
+obscure_password=`rclone obscure $SYNC_WEBDAV_PASSWORD`
 rclone config create \
-  samba local \
+  webdav webdav \
+  url="http://webdav/" \
+  user "$SYNC_WEBDAV_USERNAME" \
+  pass "$obscure_password" \
   --config ./config/default/rclone.config
 
 chown rclone-sync:root -R /var/log/rclone-sync
