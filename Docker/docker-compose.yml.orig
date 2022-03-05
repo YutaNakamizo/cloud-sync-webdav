@@ -1,31 +1,18 @@
 version: '3'
 
 services:
-  samba:
-    image: dperson/samba:latest
+  webdav:
+    build: ./webdav/latest
     environment:
       - TZ=$TZ
-      - USERID=$USERID
-      - GROUPID=$GROUPID
-    command: >
-      -u "user;userpassword"
-      -g "map to guest = Never"
-      -s "root;/share/Root;yes;no;no;user"
-      -s "sync_config;/share/sync_config;yes;no;no;user"
-      -n
-      -p
     volumes:
-      - "./data/samba/data/Root:/share/Root"
-      - "./data/sync/config/share:/share/sync_config"
-      - "./data/samba/logs:/var/log/samba"
+      - "./data/webdav/storage:/var/lib/dav"
+      - "./data/webdav/user.passwd:/user.passwd"
     restart: always
     ports:
-      - "${SAMBA_PORT_137}:137/udp"
-      - "${SAMBA_PORT_138}:138/udp"
-      - "${SAMBA_PORT_139}:139"
-      - "${SAMBA_PORT_445}:445"
+      - "${WEBDAV_PORT}:80"
     networks:
-      - samba_net
+      - sync_net
   sync:
     build: ./sync
     environment:
@@ -34,12 +21,11 @@ services:
       - "./data/sync/config/default:/usr/src/sync/config/default"
       - "./data/sync/config/share:/usr/src/sync/config/share"
       - "./data/sync/logs:/var/log/rclone-sync"
-      - "./data/samba/data/Root:/share/Root:ro"
     restart: always
     networks:
-      - samba_net
+      - sync_net
 
 networks:
-  samba_net:
+  sync_net:
     driver: bridge
 
