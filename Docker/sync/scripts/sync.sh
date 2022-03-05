@@ -27,7 +27,7 @@ if [ ! -e $targets ]; then
 fi
 
 # Exec rclone for each target
-cat $targets | while read line; do
+cat $targets | grep -v -e '^\s*#' -e '^\s*$' | while read line; do
   command=`echo $line | sed -e 's/local:\//local:\/share\/Root\//'`
   add_log $line
   add_log "rclone $command"
