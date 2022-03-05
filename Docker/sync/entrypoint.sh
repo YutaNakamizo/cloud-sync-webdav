@@ -3,7 +3,7 @@
 obscure_password=`rclone obscure $SYNC_WEBDAV_PASSWORD`
 rclone config create \
   webdav webdav \
-  url="http://webdav/" \
+  url="http://webdav/data" \
   user "$SYNC_WEBDAV_USERNAME" \
   pass "$obscure_password" \
   --config ./config/default/rclone.config
