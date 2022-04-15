@@ -1,6 +1,7 @@
 #!/bin/sh
 
-log_file=/var/log/rclone-sync/rclone-sync.log
+log_file="/var/log/rclone-sync/rclone-sync.$(date '+%Y-%m-%d').log"
+rclone_log_file="/var/log/rclone-sync/rclone.$(date '+%Y-%m-%d').log"
 ROOT=/usr/src/sync
 
 add_log () {
@@ -31,7 +32,7 @@ cat $targets | grep -v -e '^\s*#' -e '^\s*$' | while read line; do
   command=`echo $line | sed -e 's/local:\//local:\/share\/Root\//'`
   add_log $line
   add_log "rclone $command"
-  add_log `rclone $command -vv --config "$ROOT/config/default/rclone.config"`
+  `rclone $command -vv --log-file "$rclone_log_file" --config "$ROOT/config/default/rclone.config"`
 done
 
 rm ./sync.pid
